@@ -1,7 +1,10 @@
   {
     "development": {        
         "port": "3000",
-        "endpoint":""
+        "endpoint": "",
+        "key": "",
+        "databaseId": "Parking",
+        "containerId": "ParkingSlots"
     },
     "production":{     
     }

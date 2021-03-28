@@ -5,14 +5,14 @@ const express = require("express");
 
 const healthRoutes = require("./routes/health-route");
 const swaggerRoutes = require("./routes/swagger-route");
-
+const parkingRoutes = require("./routes/parking-route");
 
 const app = express();
 
 // routes and api calls
 app.use("/health", healthRoutes);
 app.use("/swagger", swaggerRoutes);
-
+app.use("/parking", parkingRoutes);
 
 // start node server
 const port = process.env.PORT || global.gConfig.port;
