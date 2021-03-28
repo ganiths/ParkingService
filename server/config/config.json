@@ -1,7 +1,7 @@
   {
     "development": {        
         "port": "3000",
-        "endpoint": "",
+        "endpoint": "https://cosmosdb",
         "key": "",
         "databaseId": "Parking",
         "containerId": "ParkingSlots"
