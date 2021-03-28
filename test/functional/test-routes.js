@@ -28,3 +28,14 @@ describe('GET /swagger/api-docs', () => {
       });
   });
 });
+
+
+describe('GET /parking', () => {
+  it('responds with json', () => {
+    return request(server)
+      .get('/parking/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
+  });
+});
