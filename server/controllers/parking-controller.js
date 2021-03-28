@@ -9,6 +9,7 @@ const database = client.database(global.gConfig.databaseId);
 const container = database.container(global.gConfig.containerId);
 
 exports.getParkingSlots = async (req, res) => {
+    try {
     const latitude = parseFloat(req.query.latitude);
     const longitude = parseFloat(req.query.longitude);
 
@@ -28,7 +29,7 @@ exports.getParkingSlots = async (req, res) => {
         const { resources: items } = await container.items
             .query(querySpec)
             .fetchAll();
-
+        console.log(items.item);
         res.json({
             items,
         });
@@ -36,4 +37,8 @@ exports.getParkingSlots = async (req, res) => {
     else {
         res.json({ error: "Bad request" });
     }
+}
+catch(e) {
+    res.json({ error: e });
+}
 }
