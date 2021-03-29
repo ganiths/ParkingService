@@ -24,7 +24,7 @@
 
         var map, indoorManager;
 
-        const params = new URLSearchParams(window.location.search)
+        const params = new URLSearchParams(window.location.search);
        
 
         //subscriptionkey, tileset and stateset ID's for Azure Maps Creator.
@@ -44,8 +44,9 @@
                 authOptions: { 
             authType: 'subscriptionKey',
             subscriptionKey: subscriptionKey
+                }
 
-            );
+            });
 
             //Wait until the map resources are ready.
             map.events.add('ready', function () {
