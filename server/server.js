@@ -2,12 +2,15 @@
 require("../server/config/config.js");
 
 const express = require("express");
+const path = require("path");
 
 const healthRoutes = require("./routes/health-route");
 const swaggerRoutes = require("./routes/swagger-route");
 const parkingRoutes = require("./routes/parking-route");
 
 const app = express();
+
+app.use(express.static('public'))
 
 // routes and api calls
 app.use("/health", healthRoutes);
