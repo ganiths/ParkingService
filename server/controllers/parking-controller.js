@@ -58,7 +58,7 @@ exports.bookParking = async (req, res) => {
             const credential = new DefaultAzureCredential();
             const serviceClient = new DigitalTwinsClient(digitalTwinsUrl, credential);
             const twinPatch = [
-                { op: "replace", path: "/IsOccupied", value: false },
+                { op: "replace", path: "/IsOccupied", value: true },
                 { op: "add", path: "/RegistrationNumber", value: req.body.registrationNumber},
                 { op: "add", path: "/BookingDateTime", value: new Date().toISOString()}
             ];
