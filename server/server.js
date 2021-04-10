@@ -10,6 +10,8 @@ const parkingRoutes = require("./routes/parking-route");
 
 const app = express();
 
+app.use(express.json());
+
 app.use(express.static('public'))
 
 // routes and api calls

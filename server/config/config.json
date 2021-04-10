@@ -4,7 +4,8 @@
         "endpoint": "https://cosmosdb",
         "key": "",
         "databaseId": "Parking",
-        "containerId": "ParkingSlots"
+        "containerId": "ParkingSlots",
+        "digitalTwinsUrl": ""
     },
     "production":{     
     }
