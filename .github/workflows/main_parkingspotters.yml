@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'parkingspotters'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4f9ca0fa106942169b1af62d6f59aca0 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_81072f7b49b64a17b9915f088d1e38c4 }}
         package: .
