@@ -20,17 +20,15 @@
     <script src="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.js"></script>
 
     <script type='text/javascript'>
- 
-
-        var map, indoorManager;
+        var map, indoorManager, selectedBayNumber;
 
         const params = new URLSearchParams(window.location.search);
-       
 
         //subscriptionkey, tileset and stateset ID's for Azure Maps Creator.
         const subscriptionKey = params.get("subscriptionKey");
         const tilesetId = params.get("tilesetId");
         const statesetId = params.get("statesetId");
+        const locationId = params.get("locationId");
 
         function GetMap() {
             //Initialize a map instance.
@@ -41,15 +39,52 @@
                 view: 'Auto',
 
                 //Add authentication details for connecting to Azure Maps.
-                authOptions: { 
-            authType: 'subscriptionKey',
-            subscriptionKey: subscriptionKey
+                authOptions: {
+                    authType: 'subscriptionKey',
+                    subscriptionKey: subscriptionKey
                 }
 
             });
 
             //Wait until the map resources are ready.
             map.events.add('ready', function () {
+                // Get the modal
+                var modal = document.getElementById("myModal");
+
+                // Get the button that opens the modal
+                var btnSubmit = document.getElementById("btnSubmit");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                btnSubmit.onclick = function () {
+                    const vehicleNumber = document.getElementById("vNumber").value;
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            alert(this.responseText);
+                        }
+                    };
+                    xhttp.open("POST", "https://parkingspotters.azurewebsites.net/parking", true);
+                    xhttp.setRequestHeader("Content-type", "application/json");
+                    xhttp.send(JSON.stringify({
+                                "locationId": locationId,
+                                "bayNumber": selectedBayNumber,
+                                "registrationNumber":vehicleNumber
+                            }));
+                }
+
+                // // When the user clicks on <span> (x), close the modal
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
                 //Add a map style selection control.
                 map.controls.add(new atlas.control.StyleControl({ mapStyles: "all" }), { position: "top-right" });
 
@@ -82,27 +117,144 @@
 
                 /* Upon a mouse click, log the feature properties to the browser's console. */
                 map.events.add("click", function (e) {
-
+                    modal.style.display = "block";
                     var features = map.layers.getRenderedShapes(e.position, 'indoor');
 
                     writeToInfoPanel('Feature(s) clicked:', features);
 
                     features.forEach(function (feature) {
                         if (feature.layer.id == 'indoor_unit_office') {
-                            console.log(feature);
+                            this.selectedBayNumber = feature.properties.featureId;
                         }
                     });
                 });
             });
         }
 
-        function writeToInfoPanel(msg, json) {            
-            
+        function writeToInfoPanel(msg, json) {
         }
     </script>
 </head>
+
 <body onload="GetMap()">
     <div id="myMap" style="position:relative;width:100%;min-width:290px;height:600px;"></div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
 
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="container">
+                <form>
+                    <div class="row">
+                        <div class="col-100">
+                            <input type="text" id="vNumber" name="vehiclenumber" placeholder="Enter vehicle number.."
+                                maxlength="20">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <input id="btnSubmit" type="button" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </body>
+
 </html>
+<style>
+    /* Style inputs, select elements and textareas */
+    input[type=text] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+
+    /* Style the submit button */
+    input[type=button] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        float: right;
+    }
+
+    /* Style the container */
+    .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 600px) {
+
+        .col-25,
+        .col-75,
+        input[type=submit] {
+            width: 100%;
+            margin-top: 0;
+        }
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
