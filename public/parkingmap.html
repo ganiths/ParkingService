@@ -65,7 +65,7 @@
                             if (this.responseText.error) {
                                 alert(this.responseText);
                             } else {
-                                window.postMessage(this.status);
+                                window.ReactNativeWebView.postMessage("Hello React Native!");
                             }
                         }
                     };
