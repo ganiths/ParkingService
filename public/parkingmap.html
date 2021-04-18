@@ -63,11 +63,11 @@
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
                             alert(this.responseText);//Test Code
-                            if (this.responseText.error) {
-                                alert(this.responseText);
-                            } else {
-                                window.ReactNativeWebView.postMessage("Hello React Native!");
-                            }
+                            // if (this.responseText.error) {
+                            //     alert(this.responseText);
+                            // } else {
+                            //     window.ReactNativeWebView.postMessage("Hello React Native!");
+                            // }
                         }
                     };
                     xhttp.open("POST", "https://parkingspotters.azurewebsites.net/parking", true);
