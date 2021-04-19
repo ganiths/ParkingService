@@ -62,6 +62,8 @@
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("vNumber").value = "";
+                            modal.style.display = "none";
                             if (this.responseText.error) {
                                 alert(this.responseText);
                             } else {
